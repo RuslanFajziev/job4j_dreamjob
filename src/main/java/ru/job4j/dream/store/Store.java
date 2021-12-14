@@ -1,6 +1,6 @@
-package ru.jobj.dream.store;
+package ru.job4j.dream.store;
 
-import ru.jobj.dream.model.Post;
+import ru.job4j.dream.model.Post;
 
 import java.util.Collection;
 import java.util.Map;

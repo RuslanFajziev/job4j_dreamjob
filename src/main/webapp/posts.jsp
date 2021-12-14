@@ -1,4 +1,11 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: FaizievRT
+  Date: 014 14.12.2021
+  Time: 21:48
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="ru.job4j.dream.model.Post" %>
 <%@ page import="ru.job4j.dream.store.Store" %>
 <!doctype html>
@@ -21,31 +28,30 @@
     <title>Работа мечты</title>
 </head>
 <body>
-<div class="container">
+<div class="container pt-3">
+
     <div class="row">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col" colspan="4">Объявления</th>
-            </tr>
-            <tr>
-                <th scope="col">Номер</th>
-                <th scope="col">Имя</th>
-                <th scope="col">Java Skill</th>
-                <th scope="col">Дата создания</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% for (Post post : Store.instOf().findAll()) { %>
-            <tr>
-                <td><%= post.getId() %></td>
-                <td><%= post.getName() %></td>
-                <td><%= post.getDescription() %></td>
-                <td><%= post.getCreated() %></td>
-            </tr>
-            <% } %>
-            </tbody>
-        </table>
+        <div class="card" style="width: 100%">
+            <div class="card-header">
+                Вакансии
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Названия</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% for (Post post : Store.instOf().findAll()) { %>
+                    <tr>
+                        <td><%= post.getName() %></td>
+                    </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 </body>
