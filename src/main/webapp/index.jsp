@@ -24,40 +24,16 @@
     <title>Работа мечты</title>
 </head>
 <body>
-<div class="container pt-3">
-
+<div class="container">
     <div class="row">
-        <div class="card" style="width: 100%">
-            <div class="card-header">
-                Объявления
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Номер</th>
-                        <th scope="col">Имя</th>
-                        <th scope="col">Специализация</th>
-                        <th scope="col">Дата создания</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <% for (Post post : Store.instOf().findAllPosts()) { %>
-                    <tr>
-                        <td><%= post.getId() %>
-                        </td>
-                        <td><%= post.getName() %>
-                        </td>
-                        <td><%= post.getDescription() %>
-                        </td>
-                        <td><%= post.getCreated() %>
-                        </td>
-                    </tr>
-                    <% } %>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/posts.jsp">Вакансии</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/candidates.jsp">Кандидаты</a>
+            </li>
+        </ul>
     </div>
 </div>
 </body>

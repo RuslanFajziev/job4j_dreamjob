@@ -42,13 +42,22 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Названия</th>
+                        <th scope="col">Номер</th>
+                        <th scope="col">Имя</th>
+                        <th scope="col">Специализация</th>
+                        <th scope="col">Дата создания</th>
                     </tr>
                     </thead>
                     <tbody>
                     <% for (Post post : Store.instOf().findAllPosts()) { %>
                     <tr>
+                        <td><%= post.getId() %>
+                        </td>
+                        <td><%= post.getName() %>
+                        </td>
                         <td><%= post.getDescription() %>
+                        </td>
+                        <td><%= post.getCreated() %>
                         </td>
                     </tr>
                     <% } %>
