@@ -2,12 +2,12 @@
   Created by IntelliJ IDEA.
   User: FaizievRT
   Date: 015 15.12.2021
-  Time: 0:13
+  Time: 0:27
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="ru.job4j.dream.store.Store" %>
-<%@ page import="ru.job4j.dream.model.Post" %>
+<%@ page import="ru.job4j.dream.model.Candidate" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -32,7 +32,7 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Новая вакансия
+                Новый кандидат
             </div>
             <div class="card-body">
                 <form>
