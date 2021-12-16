@@ -15,6 +15,11 @@ public class Post {
         this.created = created;
     }
 
+    public Post(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }
@@ -29,6 +34,10 @@ public class Post {
 
     public String getCreated() {
         return created;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
