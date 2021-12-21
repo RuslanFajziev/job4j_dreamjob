@@ -6,8 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="ru.job4j.dream.model.Post" %>
-<%@ page import="java.util.Collection" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -32,7 +31,6 @@
 </head>
 <body>
 <div class="container pt-3">
-
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
@@ -49,22 +47,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% for (Post post : (Collection<Post>) request.getAttribute("posts")) { %>
-                    <tr>
-                        <td>
-                            <a href="<%=request.getContextPath()%>/post/edit.jsp?id=<%=post.getId()%>">
-                                <i class="fa fa-edit mr-3"></i>
-                            </a>
-                            <%= post.getId() %>
-                        </td>
-                        <td><%= post.getName() %>
-                        </td>
-                        <td><%= post.getDescription() %>
-                        </td>
-                        <td><%= post.getCreated() %>
-                        </td>
-                    </tr>
-                    <% } %>
+                    <c:forEach items="${posts}" var="post">
+                        <tr>
+                            <td>
+                                <a href='<c:url value="/post/edit.jsp?id=${post.id}"/>'>
+                                    <i class="fa fa-edit mr-3"></i>
+                                </a>
+                                <c:out value="${post.id}"/>
+                            </td>
+                            <td> <c:out value="${post.name}"/></td>
+                            <td> <c:out value="${post.description}"/></td>
+                            <td> <c:out value="${post.created}"/></td>
+                        </tr>
+                    </c:forEach>
                     </tbody>
                 </table>
             </div>

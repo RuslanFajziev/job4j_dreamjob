@@ -6,8 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="ru.job4j.dream.model.Candidate" %>
-<%@ page import="java.util.Collection" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -29,7 +28,6 @@
 </head>
 <body>
 <div class="container pt-3">
-
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
@@ -44,17 +42,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% for (Candidate cand : (Collection<Candidate>) request.getAttribute("candidates")) { %>
-                    <tr>
-                        <td>
-                            <a href="<%=request.getContextPath()%>/candidate/edit.jsp?id=<%=cand.getId()%>">
-                                <i class="fa fa-edit mr-3"></i>
-                            </a>
-                            <%= cand.getId() %>
-                        </td>
-                        <td><%= cand.getName() %></td>
-                    </tr>
-                    <% } %>
+                    <c:forEach items="${candidates}" var="cond">
+                        <tr>
+                            <td>
+                                <a href='<c:url value="/post/edit.jsp?id=${cond.id}"/>'>
+                                    <i class="fa fa-edit mr-3"></i>
+                                </a>
+                                <c:out value="${cond.id}"/>
+                            </td>
+                            <td> <c:out value="${cond.name}"/></td>
+                        </tr>
+                    </c:forEach>
                     </tbody>
                 </table>
             </div>
