@@ -30,6 +30,10 @@ public class Store {
         return INST;
     }
 
+    public void delCandidate(int id) {
+        candidates.remove(id);
+    }
+
     public Collection<Post> findAllPosts() {
         return posts.values();
     }

@@ -34,23 +34,50 @@
                 Кандидаты
             </div>
             <div class="card-body">
+                <div class="row">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<%=request.getContextPath()%>">На главную</a>
+                        </li>
+                    </ul>
+                </div>
                 <table class="table">
                     <thead>
                     <tr>
                         <th scope="col">Номер</th>
                         <th scope="col">Названия</th>
+                        <th scope="col">Фото</th>
+                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
                     <c:forEach items="${candidates}" var="cond">
                         <tr>
                             <td>
-                                <a href='<c:url value="/post/edit.jsp?id=${cond.id}"/>'>
+                                <a href='<c:url value="/candidate/edit.jsp?id=${cond.id}"/>'>
                                     <i class="fa fa-edit mr-3"></i>
                                 </a>
                                 <c:out value="${cond.id}"/>
                             </td>
                             <td> <c:out value="${cond.name}"/></td>
+                            <td>
+                                <img src="<c:url value='/download?name=${cond.id}.png'/>" width="100px" height="100px">
+                            </td>
+                            <td>
+                                <form action="<c:url value='/id_foto?name=${cond.id}&del=${"false"}'/>" method="post" enctype="multipart/form-data">
+                                    <div class="checkbox">
+                                        <button type="submit" class="btn btn-primary">Установить фото</button>
+                                    </div>
+                                </form>
+                                <form action="<c:url value='/id_foto?name=${cond.id}&del=${"true"}'/>" method="post" enctype="multipart/form-data">
+                                    <div class="checkbox">
+                                        <button type="submit" class="btn btn-default">Удалить кандидата</button>
+                                    </div>
+                                </form>
+                            </td>
                         </tr>
                     </c:forEach>
                     </tbody>
