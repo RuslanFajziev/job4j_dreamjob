@@ -15,7 +15,8 @@ public class IdFotoServlet extends HttpServlet {
         var status = req.getParameter("del");
         var idFile = req.getParameter("name");
         if (status.equals("true")) {
-            File file = new File("d:\\test\\images\\" + idFile + ".png");
+            var folderData = Store.instOf().getProperty("DataFolder");
+            File file = new File(folderData + idFile + ".png");
             file.delete();
             Store.instOf().delCandidate(Integer.parseInt(idFile));
             resp.sendRedirect(req.getContextPath() + "/candidates.do");

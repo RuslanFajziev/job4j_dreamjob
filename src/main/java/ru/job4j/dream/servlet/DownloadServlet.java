@@ -1,5 +1,7 @@
 package ru.job4j.dream.servlet;
 
+import ru.job4j.dream.store.Store;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +15,8 @@ public class DownloadServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         File downloadFile = null;
-        for (File file : new File("d:\\test\\images\\").listFiles()) {
+        var folderData = Store.instOf().getProperty("DataFolder");
+        for (File file : new File(folderData).listFiles()) {
             if (name.equals(file.getName())) {
                 downloadFile = file;
                 break;

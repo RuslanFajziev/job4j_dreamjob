@@ -4,6 +4,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import ru.job4j.dream.store.Store;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -25,7 +26,8 @@ public class UploadFotoServlet extends HttpServlet {
         ServletFileUpload upload = new ServletFileUpload(factory);
         try {
             List<FileItem> items = upload.parseRequest(req);
-            File folder = new File("d:\\test\\images\\");
+            var folderData = Store.instOf().getProperty("DataFolder");
+            File folder = new File(folderData);
             if (!folder.exists()) {
                 folder.mkdir();
             }
