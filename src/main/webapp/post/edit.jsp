@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="ru.job4j.dream.store.Store" %>
+<%@ page import="ru.job4j.dream.store.MemStoreStore" %>
 <%@ page import="ru.job4j.dream.model.Post" %>
 <!doctype html>
 <html lang="en">
@@ -32,7 +32,7 @@
     String id = request.getParameter("id");
     Post post = new Post(0, "", "", "");
     if (id != null) {
-        post = Store.instOf().findById(Integer.valueOf(id));
+        post = MemStoreStore.instOf().findById(Integer.valueOf(id));
     }
 %>
 <div class="container pt-3">
