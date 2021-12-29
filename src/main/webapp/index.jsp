@@ -1,6 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="ru.job4j.dream.model.Post" %>
-<%@ page import="ru.job4j.dream.store.MemStoreStore" %>
 <!doctype html>
 <html lang="en">
 <head>

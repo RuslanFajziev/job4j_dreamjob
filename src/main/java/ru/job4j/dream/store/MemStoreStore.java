@@ -3,10 +3,8 @@ package ru.job4j.dream.store;
 import ru.job4j.dream.model.Post;
 import ru.job4j.dream.model.Candidate;
 
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -32,7 +30,7 @@ public class MemStoreStore {
         return INST;
     }
 
-    public void delCandidate(int id) {
+    public void deleteCandidate(int id) {
         candidates.remove(id);
     }
 
@@ -55,11 +53,11 @@ public class MemStoreStore {
         return posts.get(id);
     }
 
-    public Candidate findByIdCand(int id) {
+    public Candidate findByIdCandidate(int id) {
         return candidates.get(id);
     }
 
-    public void saveCand(Candidate cand) {
+    public void saveCandidate(Candidate cand) {
         if (cand.getId() == 0) {
             cand.setId(CAND_ID.incrementAndGet());
         }

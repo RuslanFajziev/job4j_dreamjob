@@ -158,6 +158,26 @@ public class DbStore implements Store {
         }
     }
 
+    public void delete(int id) {
+        var req = "DELETE from post where id = ?";
+        try (Connection cn = pool.getConnection(); PreparedStatement ps = cn.prepareStatement(req)) {
+            ps.setInt(1, id);
+            ps.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteCandidate(int id) {
+        var req = "DELETE from candidate where id = ?";
+        try (Connection cn = pool.getConnection(); PreparedStatement ps = cn.prepareStatement(req)) {
+            ps.setInt(1, id);
+            ps.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public Post findById(int id) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement("SELECT * FROM post WHERE id = ?")

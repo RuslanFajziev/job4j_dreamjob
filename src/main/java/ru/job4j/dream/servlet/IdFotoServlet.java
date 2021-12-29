@@ -1,7 +1,7 @@
 package ru.job4j.dream.servlet;
 
 import ru.job4j.dream.GetSettings;
-import ru.job4j.dream.store.MemStoreStore;
+import ru.job4j.dream.store.DbStore;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class IdFotoServlet extends HttpServlet {
             var folderData = GetSettings.getProperty("DataFolder");
             File file = new File(folderData + idFile + ".png");
             file.delete();
-            MemStoreStore.instOf().delCandidate(Integer.parseInt(idFile));
+            DbStore.instOf().deleteCandidate(Integer.parseInt(idFile));
             resp.sendRedirect(req.getContextPath() + "/candidates.do");
         } else {
             req.setAttribute("name", idFile);
