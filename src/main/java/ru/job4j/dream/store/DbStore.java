@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -118,7 +117,7 @@ public class DbStore implements Store {
                     post.setId(id.getInt(1));
                 }
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             e.printStackTrace();
         }
