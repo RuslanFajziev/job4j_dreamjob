@@ -9,12 +9,17 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class DbStore implements Store {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DbStore.class.getSimpleName());
     private final BasicDataSource pool = new BasicDataSource();
 
     private DbStore() {
@@ -23,12 +28,14 @@ public class DbStore implements Store {
                 .getResourceAsStream("db.properties")))) {
             cfg.load(io);
         } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             throw new IllegalStateException(e);
         }
 
         try {
             Class.forName(cfg.getProperty("jdbc.driver"));
         } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             throw new IllegalStateException(e);
         }
 
@@ -60,6 +67,7 @@ public class DbStore implements Store {
                 }
             }
         } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             e.printStackTrace();
         }
         return posts;
@@ -75,6 +83,7 @@ public class DbStore implements Store {
                 }
             }
         } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             e.printStackTrace();
         }
         return candidates;
@@ -99,8 +108,7 @@ public class DbStore implements Store {
     private Post create(Post post) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement("INSERT INTO post(name, description, created) VALUES (?, ?, ?)",
-                     PreparedStatement.RETURN_GENERATED_KEYS)
-        ) {
+                     PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
             ps.setString(3, post.getCreated());
@@ -110,7 +118,8 @@ public class DbStore implements Store {
                     post.setId(id.getInt(1));
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             e.printStackTrace();
         }
         return post;
@@ -119,8 +128,7 @@ public class DbStore implements Store {
     private Candidate createCandidate(Candidate candidate) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement("INSERT INTO candidate(name) VALUES (?)",
-                     PreparedStatement.RETURN_GENERATED_KEYS)
-        ) {
+                     PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, candidate.getName());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
@@ -129,6 +137,7 @@ public class DbStore implements Store {
                 }
             }
         } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             e.printStackTrace();
         }
         return candidate;
@@ -143,6 +152,7 @@ public class DbStore implements Store {
             ps.setInt(4, post.getId());
             ps.execute();
         } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getMessage());
             e.printStackTrace();
         }
     }
@@ -154,6 +164,7 @@ public class DbStore implements Store {
             ps.setInt(2, candidate.getId());
             ps.execute();
         } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             e.printStackTrace();
         }
     }
@@ -164,6 +175,7 @@ public class DbStore implements Store {
             ps.setInt(1, id);
             ps.execute();
         } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             e.printStackTrace();
         }
     }
@@ -174,6 +186,7 @@ public class DbStore implements Store {
             ps.setInt(1, id);
             ps.execute();
         } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             e.printStackTrace();
         }
     }
@@ -190,6 +203,7 @@ public class DbStore implements Store {
                 }
             }
         } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             e.printStackTrace();
         }
         return null;
@@ -205,6 +219,7 @@ public class DbStore implements Store {
                 }
             }
         } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             e.printStackTrace();
         }
         return null;
