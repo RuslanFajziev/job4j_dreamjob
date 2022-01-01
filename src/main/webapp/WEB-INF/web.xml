@@ -4,10 +4,6 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-  <context-param>
-    <param-name>javax.faces.CONFIG_FILES</param-name>
-    <param-value>/master.xml</param-value>
-  </context-param>
   <servlet>
     <servlet-name>PostServlet</servlet-name>
     <servlet-class>ru.job4j.dream.servlet.PostServlet</servlet-class>
@@ -37,9 +33,8 @@
     <servlet-class>ru.job4j.dream.servlet.IdFotoServlet</servlet-class>
   </servlet>
   <servlet>
-    <servlet-name>Faces Servlet</servlet-name>
-    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
+    <servlet-name>AuthServlet</servlet-name>
+    <servlet-class>ru.job4j.dream.servlet.AuthServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>PostServlet</servlet-name>
@@ -70,7 +65,7 @@
     <url-pattern>/id_foto</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>Faces Servlet</servlet-name>
-    <url-pattern>*.xhtml</url-pattern>
+    <servlet-name>AuthServlet</servlet-name>
+    <url-pattern>/auth.do</url-pattern>
   </servlet-mapping>
 </web-app>
