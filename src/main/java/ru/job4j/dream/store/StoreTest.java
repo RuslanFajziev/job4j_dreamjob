@@ -3,7 +3,7 @@ package ru.job4j.dream.store;
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
 
-public class MainStore {
+public class StoreTest {
     public static void main(String[] args) {
         Store store = DbStore.instOf();
         store.save(new Post(0, "Petr", "Junior Java Job", "2021-12-14"));

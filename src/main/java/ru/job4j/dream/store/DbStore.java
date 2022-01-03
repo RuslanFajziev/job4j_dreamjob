@@ -55,6 +55,10 @@ public class DbStore implements Store {
         return Lazy.INST;
     }
 
+    public void regUser(String name, String email, String password) {
+
+    }
+
     public Collection<Post> findAllPosts() {
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();

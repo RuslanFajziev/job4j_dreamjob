@@ -21,4 +21,7 @@ public interface Store {
     void delete(int id);
 
     void deleteCandidate(int id);
+
+    void regUser(String name, String email, String password);
+
 }
