@@ -10,7 +10,7 @@ CREATE TABLE candidate (
     name TEXT
 );
 
-CREATE TABLE user (
+CREATE TABLE userWEB (
     id SERIAL PRIMARY KEY,
     name TEXT,
     email TEXT,
