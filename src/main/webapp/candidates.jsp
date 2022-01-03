@@ -34,16 +34,7 @@
                 Кандидаты
             </div>
             <div class="card-body">
-                <div class="row">
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<%=request.getContextPath()%>">На главную</a>
-                        </li>
-                    </ul>
-                </div>
+                <jsp:include page="menu.jsp" />
                 <table class="table">
                     <thead>
                     <tr>
