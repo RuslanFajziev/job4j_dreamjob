@@ -1,6 +1,5 @@
 package ru.job4j.dream.servlet;
 
-import ru.job4j.dream.model.User;
 import ru.job4j.dream.store.DbStore;
 
 import javax.servlet.ServletException;
@@ -10,23 +9,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class AuthServlet extends HttpServlet {
+public class RegServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         var dbStore = DbStore.instOf();
-        var rsl = dbStore.findUserForEmail(email);
+        var rsl = dbStore.regUser(name, email, password);
         if (rsl != -1) {
-            var usr = dbStore.findUserForId(rsl);
-            if (usr.getPassword().equals(password)) {
-                HttpSession sc = req.getSession();
-                sc.setAttribute("user", usr);
-                resp.sendRedirect(req.getContextPath() + "/index.jsp");
-                return;
-            }
+            HttpSession sc = req.getSession();
+            sc.setAttribute("user", dbStore.findUserForId(rsl));
+            resp.sendRedirect(req.getContextPath() + "/index.jsp");
+        } else {
+            req.setAttribute("error", "Уже есть пользователь с email: " + email);
+            req.getRequestDispatcher("reg.jsp").forward(req, resp);
         }
-        req.setAttribute("error", "Не верный email или пароль");
-        req.getRequestDispatcher("login.jsp").forward(req, resp);
     }
 }

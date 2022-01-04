@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: FaizievRT
-  Date: 001 01.01.2022
-  Time: 17:37
+  Date: 003 03.01.2022
+  Time: 19:14
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -35,10 +35,14 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Авторизация
+                Регистрация
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/auth.do" method="post">
+                <form action="<%=request.getContextPath()%>/reg.do" method="post">
+                    <div class="form-group">
+                        <label>Имя пользователя</label>
+                        <input type="text" class="form-control" name="name">
+                    </div>
                     <div class="form-group">
                         <label>Почта</label>
                         <input type="text" class="form-control" name="email">
@@ -47,14 +51,14 @@
                         <label>Пароль</label>
                         <input type="text" class="form-control" name="password">
                     </div>
-                    <button type="submit" class="btn btn-primary">Войти</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
                 <c:if test="${not empty error}">
                     <div style="color:red; font-weight: bold; margin: 30px 0;">
                         <c:out value="${error}"/>
                     </div>
-                    <form action="<%=request.getContextPath()%>/reg.jsp" method="post">
-                        <button type="submit" class="btn btn-primary">Регистрация</button>
+                    <form action="<%=request.getContextPath()%>/login.jsp" method="post">
+                        <button type="submit" class="btn btn-primary">Войти</button>
                     </form>
                 </c:if>
             </div>

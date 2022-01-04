@@ -16,6 +16,7 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.job4j.dream.model.User;
 
 public class DbStore implements Store {
     private static final Logger LOGGER = LoggerFactory.getLogger(DbStore.class.getSimpleName());
@@ -55,8 +56,65 @@ public class DbStore implements Store {
         return Lazy.INST;
     }
 
-    public void regUser(String name, String email, String password) {
+    public int regUser(String name, String email, String password) {
+        int rsl = findUserForEmail(email);
+        if (rsl != -1) {
+            return -1;
+        } else {
+            var req = "INSERT INTO userWEB(name, email, password) VALUES (?, ?, ?)";
+            try (Connection cn = pool.getConnection(); PreparedStatement ps = cn.prepareStatement(req, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                ps.setString(1, name);
+                ps.setString(2, email);
+                ps.setString(3, password);
+                ps.execute();
+                try (ResultSet id = ps.getGeneratedKeys()) {
+                    if (id.next()) {
+                        return id.getInt(1);
+                    }
+                }
+            } catch (Exception e) {
+                LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
+                e.printStackTrace();
+            }
+            return -1;
+        }
+    }
 
+    public int findUserForEmail(String email) {
+        int rsl = -1;
+        var req = "SELECT id FROM userWEB WHERE email = ?";
+        try (Connection cn = pool.getConnection(); PreparedStatement ps = cn.prepareStatement(req)) {
+            ps.setString(1, email);
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    rsl = it.getInt("id");
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
+            e.printStackTrace();
+        }
+        return rsl;
+    }
+
+    public User findUserForId(int id) {
+        var req = "SELECT * FROM userWEB WHERE id = ?";
+        User usr = new User();
+        try (Connection cn = pool.getConnection(); PreparedStatement ps = cn.prepareStatement(req)) {
+            ps.setInt(1, id);
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    usr.setId(it.getInt("id"));
+                    usr.setName(it.getString("name"));
+                    usr.setEmail(it.getString("email"));
+                    usr.setPassword(it.getString("password"));
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
+            e.printStackTrace();
+        }
+        return usr;
     }
 
     public Collection<Post> findAllPosts() {
