@@ -19,13 +19,15 @@ public interface Store {
 
     Candidate findByIdCandidate(int id);
 
+    Post findByName(String name);
+
     void delete(int id);
 
     void deleteCandidate(int id);
 
     int regUser(String name, String email, String password);
 
-    int findUserForEmail(String email);
+    User findUserForEmail(String email);
 
     User findUserForId(int id);
 }
