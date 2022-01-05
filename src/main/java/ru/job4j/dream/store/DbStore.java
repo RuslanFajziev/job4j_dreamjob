@@ -24,8 +24,7 @@ public class DbStore implements Store {
 
     private DbStore() {
         Properties cfg = new Properties();
-        try (BufferedReader io = new BufferedReader(new InputStreamReader(DbStore.class.getClassLoader()
-                .getResourceAsStream("db.properties")))) {
+        try (BufferedReader io = new BufferedReader(new InputStreamReader(DbStore.class.getClassLoader().getResourceAsStream("db.properties")))) {
             cfg.load(io);
         } catch (Exception e) {
             LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
@@ -58,7 +57,7 @@ public class DbStore implements Store {
 
     public int regUser(String name, String email, String password) {
         var rsl = findUserForEmail(email);
-        if (rsl.getName().isEmpty()) {
+        if (rsl != null) {
             return -1;
         } else {
             var req = "INSERT INTO userWEB(name, email, password) VALUES (?, ?, ?)";
@@ -83,22 +82,23 @@ public class DbStore implements Store {
 
     public User findUserForEmail(String email) {
         var req = "SELECT * FROM userWEB WHERE email = ?";
-        User usr = new User();
         try (Connection cn = pool.getConnection(); PreparedStatement ps = cn.prepareStatement(req)) {
             ps.setString(1, email);
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
+                    User usr = new User();
                     usr.setId(it.getInt("id"));
                     usr.setName(it.getString("name"));
                     usr.setEmail(it.getString("email"));
                     usr.setPassword(it.getString("password"));
+                    return usr;
                 }
             }
         } catch (Exception e) {
             LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             e.printStackTrace();
         }
-        return usr;
+        return null;
     }
 
     public User findUserForId(int id) {
@@ -254,25 +254,6 @@ public class DbStore implements Store {
             LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             e.printStackTrace();
         }
-    }
-
-    public Post findByName(String name) {
-        var req = "SELECT * FROM post WHERE name = ?";
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(req)
-        ) {
-            ps.setString(1, name);
-            try (ResultSet it = ps.executeQuery()) {
-                if (it.next()) {
-                    return new Post(it.getInt("id"), it.getString("name"),
-                            it.getString("description"), it.getString("created"));
-                }
-            }
-        } catch (Exception e) {
-            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public Post findById(int id) {
