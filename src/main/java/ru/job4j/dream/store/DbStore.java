@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,8 +24,11 @@ public class DbStore implements Store {
     private final BasicDataSource pool = new BasicDataSource();
 
     private DbStore() {
+        var fileProperties = "db.properties";
+        var fileProperties2 = "dbH2.properties";
         Properties cfg = new Properties();
-        try (BufferedReader io = new BufferedReader(new InputStreamReader(DbStore.class.getClassLoader().getResourceAsStream("db.properties")))) {
+        try (BufferedReader io = new BufferedReader(new InputStreamReader(
+                DbStore.class.getClassLoader().getResourceAsStream(fileProperties2)))) {
             cfg.load(io);
         } catch (Exception e) {
             LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
@@ -288,5 +292,58 @@ public class DbStore implements Store {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Post findByNamePost(String name) {
+        var req = "SELECT * FROM post WHERE name = ? limit 1";
+        try (Connection cn = pool.getConnection(); PreparedStatement ps = cn.prepareStatement(req)) {
+            ps.setString(1, name);
+            try (ResultSet it = ps.executeQuery()) {
+                if (it.next()) {
+                    return new Post(it.getInt("id"), it.getString("name"),
+                            it.getString("description"), it.getString("created"));
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Candidate findByNameCandidate(String name) {
+        var req = "SELECT * FROM candidate WHERE name = ? limit 1";
+        try (Connection cn = pool.getConnection(); PreparedStatement ps = cn.prepareStatement(req)) {
+            ps.setString(1, name);
+            try (ResultSet it = ps.executeQuery()) {
+                if (it.next()) {
+                    return new Candidate(it.getInt("id"), it.getString("name"));
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void wipeTablePost() {
+        var req = "DELETE from post";
+        try (Connection cn = pool.getConnection(); PreparedStatement ps = cn.prepareStatement(req)) {
+            ps.execute();
+        } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
+            e.printStackTrace();
+        }
+    }
+
+    public void wipeTableCandidate() {
+        var req = "DELETE from candidate";
+        try (Connection cn = pool.getConnection(); PreparedStatement ps = cn.prepareStatement(req)) {
+            ps.execute();
+        } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
+            e.printStackTrace();
+        }
     }
 }

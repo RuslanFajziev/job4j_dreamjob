@@ -23,7 +23,15 @@ public interface Store {
 
     void deleteCandidate(int id);
 
+    void wipeTablePost();
+
+    void wipeTableCandidate();
+
     int regUser(String name, String email, String password);
+
+    Post findByNamePost(String name);
+
+    Candidate findByNameCandidate(String name);
 
     User findUserForEmail(String email);
 

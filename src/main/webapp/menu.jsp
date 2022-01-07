@@ -31,7 +31,7 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">Войти</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/reg.jsp.jsp">Регистрация</a>
+                <a class="nav-link" href="<%=request.getContextPath()%>/reg.jsp">Регистрация</a>
             </li>
         </c:if>
     </ul>

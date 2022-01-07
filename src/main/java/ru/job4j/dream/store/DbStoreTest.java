@@ -1,10 +1,10 @@
 package ru.job4j.dream.store;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
+
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
-
-import static org.junit.Assert.*;
 
 public class DbStoreTest {
     @Test
