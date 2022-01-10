@@ -28,6 +28,13 @@
             }
             return false;
         }
+
+        function addRow() {
+            const name = $('#name').val();
+            var surname = $('#surname').val();
+            $('#table tr:last').after('<tr><td>' + name +'</td>' +
+                '<td>' + surname +'</td><td>' + "@" + surname + "_" + name +'</td></tr>');
+        }
     </script>
 </head>
 <body>
@@ -68,10 +75,9 @@
     <div class="card-header">
         <h4>Сегодняшние анкеты</h4>
     </div>
-    <table class="table">
+    <table class="table" id="table">
         <thead class="thead-dark">
         <tr>
-            <th scope="col">#</th>
             <th scope="col">First</th>
             <th scope="col">Last</th>
             <th scope="col">Handle</th>
@@ -79,25 +85,23 @@
         </thead>
         <tbody>
         <tr>
-            <th scope="row">1</th>
             <td>Mark</td>
             <td>Otto</td>
             <td>@mdo</td>
         </tr>
         <tr>
-            <th scope="row">2</th>
             <td>Jacob</td>
             <td>Thornton</td>
             <td>@fat</td>
         </tr>
         <tr>
-            <th scope="row">3</th>
             <td>Larry</td>
             <td>the Bird</td>
             <td>@twitter</td>
         </tr>
         </tbody>
     </table>
+    <button type="button" class="btn btn-primary" onclick="addRow()">Add row</button>
 </div>
 </body>
 </html>
