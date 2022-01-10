@@ -28,7 +28,7 @@ public class DbStore implements Store {
         var fileProperties2 = "dbH2.properties";
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(new InputStreamReader(
-                DbStore.class.getClassLoader().getResourceAsStream(fileProperties2)))) {
+                DbStore.class.getClassLoader().getResourceAsStream(fileProperties)))) {
             cfg.load(io);
         } catch (Exception e) {
             LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
