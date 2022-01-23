@@ -8,6 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="ru.job4j.dream.store.DbStore" %>
 <%@ page import="ru.job4j.dream.model.Candidate" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.util.Date" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,18 +21,38 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
 
     <title>Работа мечты</title>
 </head>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/dreamjob/cityJson.do',
+            dataType: 'json'
+        }).done(function (data) {
+            let result = "";
+            // result += "<option disabled selected>Выберите город</option>";
+            for (var city of data) {
+                result += "<option>" + city.name + "</option>";
+            }
+            $('#cityName').html(result);
+        });
+    });
+</script>
 <body>
 <%
     String id = request.getParameter("id");
-    Candidate cand = new Candidate(0, "");
+    Candidate cand = new Candidate(0, "", "",  new Date());
     if (id != null) {
         cand = DbStore.instOf().findByIdCandidate(Integer.valueOf(id));
     }
@@ -46,10 +68,13 @@
                 <% } %>
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/candidates.do?id=<%=cand.getId()%>" method="post">
+                <form id="my_form" action="<%=request.getContextPath()%>/candidates.do?id=<%=cand.getId()%>" method="post">
                     <div class="form-group">
                         <label>Имя</label>
-                        <input type="text" class="form-control" name="name" value="<%=cand.getName()%>">
+                        <input type="text" required class="form-control" name="name" value="<%=cand.getName()%>">
+                        <label for="cityName">Город</label>
+                        <select class="form-control" id="cityName" name="cityName">
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>

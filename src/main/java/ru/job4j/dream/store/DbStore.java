@@ -2,6 +2,7 @@ package ru.job4j.dream.store;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Post;
 
 import java.io.BufferedReader;
@@ -9,11 +10,9 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Properties;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,14 +124,17 @@ public class DbStore implements Store {
         return usr;
     }
 
-    public Collection<Post> findAllPosts() {
+    public List<Post> findAllPosts(Boolean today) {
+        var queryAll = "SELECT * FROM Post ORDER BY id";
+        var queryTodayAll = "SELECT * FROM Post WHERE create_date >= CURRENT_DATE ORDER BY id";
+        var query = today ? queryTodayAll : queryAll;
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM post")) {
+             PreparedStatement ps = cn.prepareStatement(query)) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
                     posts.add(new Post(it.getInt("id"), it.getString("name"),
-                            it.getString("description"), it.getString("created")));
+                            it.getString("description"), (it.getDate("create_date"))));
                 }
             }
         } catch (Exception e) {
@@ -142,13 +144,17 @@ public class DbStore implements Store {
         return posts;
     }
 
-    public Collection<Candidate> findAllCandidates() {
+    public List<Candidate> findAllCandidates(Boolean today) {
+        var queryAll = "SELECT * FROM Candidate ORDER BY id";
+        var queryTodayAll = "SELECT * FROM Candidate WHERE create_date >= CURRENT_DATE ORDER BY id";
+        var query = today ? queryTodayAll : queryAll;
         List<Candidate> candidates = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM candidate")) {
+             PreparedStatement ps = cn.prepareStatement(query)) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    candidates.add(new Candidate(it.getInt("id"), it.getString("name")));
+                    candidates.add(new Candidate(it.getInt("id"), it.getString("name"),
+                            it.getString("cityName"), it.getDate("create_date")));
                 }
             }
         } catch (Exception e) {
@@ -156,6 +162,22 @@ public class DbStore implements Store {
             e.printStackTrace();
         }
         return candidates;
+    }
+
+    public List<City> findAllCities() {
+        List<City> cities = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM city ORDER BY id")) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    cities.add(new City(it.getInt("id"), it.getString("name")));
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
+            e.printStackTrace();
+        }
+        return cities;
     }
 
     public void save(Post post) {
@@ -174,13 +196,21 @@ public class DbStore implements Store {
         }
     }
 
+    public void saveCity(City city) {
+        if (city.getId() == 0) {
+            createCity(city);
+        } else {
+            updateCity(city);
+        }
+    }
+
     private Post create(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("INSERT INTO post(name, description, created) VALUES (?, ?, ?)",
+             PreparedStatement ps = cn.prepareStatement("INSERT INTO post(name, description, create_date) VALUES (?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
-            ps.setString(3, post.getCreated());
+            ps.setTimestamp(3, new Timestamp(post.getCreateDate().getTime()));
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -196,9 +226,11 @@ public class DbStore implements Store {
 
     private Candidate createCandidate(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("INSERT INTO candidate(name) VALUES (?)",
+             PreparedStatement ps = cn.prepareStatement("INSERT INTO candidate(name, cityName, create_date) VALUES (?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, candidate.getName());
+            ps.setString(2, candidate.getCityName());
+            ps.setTimestamp(3, new Timestamp(candidate.getCreateDate().getTime()));
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -212,12 +244,30 @@ public class DbStore implements Store {
         return candidate;
     }
 
+    private City createCity(City city) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("INSERT INTO city(name) VALUES (?)",
+                     PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, city.getName());
+            ps.execute();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    city.setId(id.getInt(1));
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
+            e.printStackTrace();
+        }
+        return city;
+    }
+
     private void update(Post post) {
-        var req = "UPDATE post SET name = ?, description = ?, created = ? WHERE id = ?";
+        var req = "UPDATE post SET name = ?, description = ?, create_date = ? WHERE id = ?";
         try (Connection cn = pool.getConnection(); PreparedStatement ps = cn.prepareStatement(req)) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
-            ps.setString(3, post.getCreated());
+            ps.setTimestamp(3, new Timestamp(post.getCreateDate().getTime()));
             ps.setInt(4, post.getId());
             ps.execute();
         } catch (Exception e) {
@@ -227,10 +277,24 @@ public class DbStore implements Store {
     }
 
     private void updateCandidate(Candidate candidate) {
-        var req = "UPDATE candidate SET name = ? WHERE id = ?";
+        var req = "UPDATE candidate SET name = ?, cityName = ?, create_date = ?  WHERE id = ?";
         try (Connection cn = pool.getConnection(); PreparedStatement ps = cn.prepareStatement(req)) {
             ps.setString(1, candidate.getName());
-            ps.setInt(2, candidate.getId());
+            ps.setString(2, candidate.getCityName());
+            ps.setTimestamp(3, new Timestamp(candidate.getCreateDate().getTime()));
+            ps.setInt(4, candidate.getId());
+            ps.execute();
+        } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
+            e.printStackTrace();
+        }
+    }
+
+    private void updateCity(City city) {
+        var req = "UPDATE city SET name = ? WHERE id = ?";
+        try (Connection cn = pool.getConnection(); PreparedStatement ps = cn.prepareStatement(req)) {
+            ps.setString(1, city.getName());
+            ps.setInt(2, city.getId());
             ps.execute();
         } catch (Exception e) {
             LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
@@ -268,7 +332,7 @@ public class DbStore implements Store {
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
                     return new Post(it.getInt("id"), it.getString("name"),
-                            it.getString("description"), it.getString("created"));
+                            it.getString("description"), it.getDate("create_date"));
                 }
             }
         } catch (Exception e) {
@@ -284,7 +348,24 @@ public class DbStore implements Store {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return new Candidate(it.getInt("id"), it.getString("name"));
+                    return new Candidate(it.getInt("id"), it.getString("name"),
+                            it.getString("cityName"), it.getDate("create_date"));
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public City findByIdCity(int id) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM city WHERE id = ?")) {
+            ps.setInt(1, id);
+            try (ResultSet it = ps.executeQuery()) {
+                if (it.next()) {
+                    return new City(it.getInt("id"), it.getString("name"));
                 }
             }
         } catch (Exception e) {
@@ -301,7 +382,7 @@ public class DbStore implements Store {
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
                     return new Post(it.getInt("id"), it.getString("name"),
-                            it.getString("description"), it.getString("created"));
+                            it.getString("description"), it.getDate("create_date"));
                 }
             }
         } catch (Exception e) {
@@ -317,7 +398,8 @@ public class DbStore implements Store {
             ps.setString(1, name);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return new Candidate(it.getInt("id"), it.getString("name"));
+                    return new Candidate(it.getInt("id"), it.getString("name"),
+                            it.getString("cityName"), it.getDate("create_date"));
                 }
             }
         } catch (Exception e) {

@@ -2,12 +2,14 @@ CREATE TABLE post (
     id SERIAL PRIMARY KEY,
     name TEXT,
     description TEXT,
-    created TEXT
+    create_date timestamp without time zone
 );
 
 CREATE TABLE candidate (
     id SERIAL PRIMARY KEY,
     name TEXT
+    cityName TEXT,
+    create_date timestamp without time zone
 );
 
 CREATE TABLE userWEB (
@@ -15,4 +17,9 @@ CREATE TABLE userWEB (
     name TEXT,
     email TEXT,
     password TEXT
+);
+
+CREATE TABLE city (
+     id SERIAL PRIMARY KEY,
+     name TEXT
 );

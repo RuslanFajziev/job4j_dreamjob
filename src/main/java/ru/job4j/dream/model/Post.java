@@ -1,38 +1,52 @@
 package ru.job4j.dream.model;
 
+import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.Objects;
 
 public class Post {
     private int id;
     private String name;
     private String description;
-    private String created;
+    private Date createDate;
 
-    public Post(int id, String name, String description, String created) {
+    public Post(int id, String name, String description, Date createDate) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.created = created;
+        this.createDate = createDate;
     }
 
     public int getId() {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public String getCreated() {
-        return created;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     @Override
@@ -41,7 +55,7 @@ public class Post {
                 + "id=" + id
                 + ", name='" + name + '\''
                 + ", description='" + description + '\''
-                + ", created='" + created + '\''
+                + ", create_date=" + createDate
                 + '}';
     }
 
@@ -54,11 +68,11 @@ public class Post {
             return false;
         }
         Post post = (Post) o;
-        return id == post.id && Objects.equals(name, post.name) && Objects.equals(description, post.description) && Objects.equals(created, post.created);
+        return id == post.id && Objects.equals(name, post.name) && Objects.equals(description, post.description) && Objects.equals(createDate, post.createDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, created);
+        return Objects.hash(id, name, description, createDate);
     }
 }

@@ -1,5 +1,22 @@
 # job4j_dreamjob
-Проект биржа труда job4j_dreamjob
+Техническое задание - проект "Работа мечты"
 
-[![Build Status](https://app.travis-ci.com/RuslanFajziev/job4j_dreamjob.svg?branch=main)](https://app.travis-ci.com/RuslanFajziev/job4j_dreamjob)
-[![codecov](https://codecov.io/gh/RuslanFajziev/job4j_dreamjob/branch/master/graph/badge.svg?token=15LAXTD13N)](https://codecov.io/gh/RuslanFajziev/job4j_dreamjob)
+Для работы с сайтом, необходима авторизация.
+![ScreenShot](images/login.png)
+Также контролируется заполненость полей и корректность данных авторизации.
+![ScreenShot](images/error.png)
+На главной страницы, после авторизации выводиться свежие вакансии и кандидаты.
+Размещенные сегодня.
+![ScreenShot](images/home.png)
+С главной страницы можно перейти на страницу списка вакансий.
+![ScreenShot](images/vacancy.png)
+Редактировать или добавить вакансию.
+![ScreenShot](images/vacancyEditAdd.png)
+Или на страницу со списком кандидатов.
+![ScreenShot](images/candidate.png)
+Редактировать или добавить кандидата.
+![ScreenShot](images/candidateEditAdd.png)
+Установить фото кандидата.
+![ScreenShot](images/foto.png)
+Также можно удалить кандидата.
+Хранение данных о пользователях, вакансиях, кандидатах и городах реализовано в БД Postgres SQL.

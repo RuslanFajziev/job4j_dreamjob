@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -42,7 +43,7 @@
                     <thead>
                     <tr>
                         <th scope="col">Номер</th>
-                        <th scope="col">Имя</th>
+                        <th scope="col">Название</th>
                         <th scope="col">Специализация</th>
                         <th scope="col">Дата создания</th>
                     </tr>
@@ -56,9 +57,9 @@
                                 </a>
                                 <c:out value="${post.id}"/>
                             </td>
-                            <td> <c:out value="${post.name}"/></td>
-                            <td> <c:out value="${post.description}"/></td>
-                            <td> <c:out value="${post.created}"/></td>
+                            <td><c:out value="${post.name}"/></td>
+                            <td><c:out value="${post.description}"/></td>
+                            <td><fmt:formatDate type="date" value="${post.createDate}"/></td>
                         </tr>
                     </c:forEach>
                     </tbody>

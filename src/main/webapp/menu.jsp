@@ -23,6 +23,12 @@
         </li>
         <c:if test="${user != null}">
             <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/city.do">Города</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/city/edit.jsp">Добавить город</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/logout.do">Выйти из <c:out value="${user.name}"/></a>
             </li>
         </c:if>

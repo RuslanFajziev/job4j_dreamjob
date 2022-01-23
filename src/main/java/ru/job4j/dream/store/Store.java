@@ -1,15 +1,19 @@
 package ru.job4j.dream.store;
 
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Post;
 import ru.job4j.dream.model.User;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface Store {
-    Collection<Post> findAllPosts();
+    List<Post> findAllPosts(Boolean now);
 
-    Collection<Candidate> findAllCandidates();
+    List<Candidate> findAllCandidates(Boolean today);
+
+    List<City> findAllCities();
 
     void save(Post post);
 
@@ -17,7 +21,11 @@ public interface Store {
 
     void saveCandidate(Candidate candidate);
 
+    void saveCity(City city);
+
     Candidate findByIdCandidate(int id);
+
+    City findByIdCity(int id);
 
     void delete(int id);
 

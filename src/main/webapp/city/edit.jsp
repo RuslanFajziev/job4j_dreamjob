@@ -1,15 +1,13 @@
 <%--
   Created by IntelliJ IDEA.
   User: FaizievRT
-  Date: 015 15.12.2021
-  Time: 0:13
+  Date: 014 14.01.2022
+  Time: 1:26
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="ru.job4j.dream.model.Post" %>
 <%@ page import="ru.job4j.dream.store.DbStore" %>
-<%@ page import="java.time.LocalDateTime" %>
-<%@ page import="java.util.Date" %>
+<%@ page import="ru.job4j.dream.model.City" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -32,9 +30,9 @@
 <body>
 <%
     String id = request.getParameter("id");
-    Post post = new Post(0, "", "", new Date());
+    City city = new City(0, "");
     if (id != null) {
-        post = DbStore.instOf().findById(Integer.valueOf(id));
+        city = DbStore.instOf().findByIdCity(Integer.valueOf(id));
     }
 %>
 <div class="container pt-3">
@@ -42,18 +40,16 @@
         <div class="card" style="width: 100%">
             <div class="card-header">
                 <% if (id == null) { %>
-                Новая вакансия
+                Добавление нового города
                 <% } else { %>
-                Редактирование вакансии
+                Редактирование города
                 <% } %>
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/posts.do?id=<%=post.getId()%>" method="post">
+                <form action="<%=request.getContextPath()%>/city.do?id=<%=city.getId()%>" method="post">
                     <div class="form-group">
                         <label>Название</label>
-                        <input type="text" required class="form-control" name="name" value="<%=post.getName()%>">
-                        <label>Специализация</label>
-                        <input type="text" required class="form-control" name="description" value="<%=post.getDescription()%>">
+                        <input type="text" required class="form-control" name="name" value="<%=city.getName()%>">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>

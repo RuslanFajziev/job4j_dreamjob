@@ -29,6 +29,33 @@
 
     <title>Работа мечты</title>
 </head>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+<script>
+    function senderReg() {
+        if (checkDate()) {
+            $('#my_form').submit();
+        }
+    }
+
+    function checkDate() {
+        var nameVar = $('#name').val();
+        var emailVar = $('#email').val();
+        var passwordVar = $('#password').val();
+        if (nameVar == '') {
+            alert($('#name').attr('title'));
+            return false;
+        } else if (emailVar == '') {
+            alert($('#email').attr('title'));
+            return false;
+        } else if (passwordVar == '') {
+            alert($('#password').attr('title'));
+            return false;
+        }
+        return true;
+    }
+</script>
 <body>
 <div class="container pt-3">
 
@@ -38,20 +65,20 @@
                 Регистрация
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/reg.do" method="post">
+                <form id="my_form" my_form action="<%=request.getContextPath()%>/reg.do" method="post">
                     <div class="form-group">
                         <label>Имя пользователя</label>
-                        <input type="text" class="form-control" name="name">
+                        <input type="text" class="form-control" title="поле Имя пользователя не заполнено" name="name" id="name">
                     </div>
                     <div class="form-group">
                         <label>Почта</label>
-                        <input type="text" class="form-control" name="email">
+                        <input type="text" class="form-control" title="поле Почта не заполнено" name="email" id="email">
                     </div>
                     <div class="form-group">
                         <label>Пароль</label>
-                        <input type="text" class="form-control" name="password">
+                        <input type="text" class="form-control" title="поле Пароль не заполнено" name="password" id="password">
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="button" class="btn btn-primary" onclick="senderReg();">Сохранить</button>
                 </form>
                 <c:if test="${not empty error}">
                     <div style="color:red; font-weight: bold; margin: 30px 0;">

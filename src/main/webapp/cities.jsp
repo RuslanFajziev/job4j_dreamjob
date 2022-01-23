@@ -1,13 +1,12 @@
 <%--
   Created by IntelliJ IDEA.
   User: FaizievRT
-  Date: 014 14.12.2021
-  Time: 23:14
+  Date: 014 14.01.2022
+  Time: 1:07
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -35,7 +34,7 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Кандидаты
+                Города
             </div>
             <div class="card-body">
                 <jsp:include page="menu.jsp"/>
@@ -43,41 +42,19 @@
                     <thead>
                     <tr>
                         <th scope="col">Номер</th>
-                        <th scope="col">Имя</th>
-                        <th scope="col">Дата</th>
-                        <th scope="col">Город</th>
-                        <th scope="col">Фото</th>
+                        <th scope="col">Название</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${candidates}" var="cond">
+                    <c:forEach items="${cities}" var="сity">
                         <tr>
                             <td>
-                                <a href='<c:url value="/candidate/edit.jsp?id=${cond.id}"/>'>
+                                <a href='<c:url value="/city/edit.jsp?id=${сity.id}"/>'>
                                     <i class="fa fa-edit mr-3"></i>
                                 </a>
-                                <c:out value="${cond.id}"/>
+                                <c:out value="${сity.id}"/>
                             </td>
-                            <td><c:out value="${cond.name}"/></td>
-                            <td><fmt:formatDate type="date" value="${cond.createDate}"/></td>
-                            <td><c:out value="${cond.cityName}"/></td>
-                            <td>
-                                <img src="<c:url value='/download?name=${cond.id}.png'/>" width="100px" height="100px">
-                            </td>
-                            <td>
-                                <form action="<c:url value='/id_foto?name=${cond.id}&del=${"false"}'/>" method="post"
-                                      enctype="multipart/form-data">
-                                    <div class="checkbox">
-                                        <button type="submit" class="btn btn-primary">Установить фото</button>
-                                    </div>
-                                </form>
-                                <form action="<c:url value='/id_foto?name=${cond.id}&del=${"true"}'/>" method="post"
-                                      enctype="multipart/form-data">
-                                    <div class="checkbox">
-                                        <button type="submit" class="btn btn-default">Удалить кандидата</button>
-                                    </div>
-                                </form>
-                            </td>
+                            <td><c:out value="${сity.name}"/></td>
                         </tr>
                     </c:forEach>
                     </tbody>
