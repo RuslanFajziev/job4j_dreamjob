@@ -126,7 +126,7 @@ public class DbStore implements Store {
 
     public List<Post> findAllPosts(Boolean today) {
         var queryAll = "SELECT * FROM Post ORDER BY id";
-        var queryTodayAll = "SELECT * FROM Post WHERE create_date >= CURRENT_DATE ORDER BY id";
+        var queryTodayAll = "SELECT * FROM Post WHERE create_date BETWEEN CURRENT_DATE AND CURRENT_DATE + 1 ORDER BY id";
         var query = today ? queryTodayAll : queryAll;
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
@@ -146,7 +146,7 @@ public class DbStore implements Store {
 
     public List<Candidate> findAllCandidates(Boolean today) {
         var queryAll = "SELECT * FROM Candidate ORDER BY id";
-        var queryTodayAll = "SELECT * FROM Candidate WHERE create_date >= CURRENT_DATE ORDER BY id";
+        var queryTodayAll = "SELECT * FROM candidate WHERE create_date BETWEEN CURRENT_DATE AND CURRENT_DATE + 1 ORDER BY id";
         var query = today ? queryTodayAll : queryAll;
         List<Candidate> candidates = new ArrayList<>();
         try (Connection cn = pool.getConnection();

@@ -68,7 +68,8 @@ public class Candidate {
             return false;
         }
         Candidate candidate = (Candidate) o;
-        return id == candidate.id && Objects.equals(name, candidate.name) && Objects.equals(cityName, candidate.cityName) && Objects.equals(createDate, candidate.createDate);
+        return id == candidate.id && Objects.equals(name, candidate.name)
+                && Objects.equals(cityName, candidate.cityName) && Objects.equals(createDate, candidate.createDate);
     }
 
     @Override
