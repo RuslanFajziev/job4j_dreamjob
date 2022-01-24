@@ -1,0 +1,41 @@
+2022-01-23 22:44:33 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DATABASECHANGELOGLOCK" not found (this database is empty); SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42104-206]
+2022-01-23 22:44:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a\000aCREATE TABLE CANDIDATE (\000a    ID SERIAL PRIMARY KEY,\000a    NAME TEXT\000a    CITYNAME[*] TEXT,\000a    CREATE_DATE TIMESTAMP WITHOUT TIME ZONE\000a);\000a\000aCREATE TABLE USERWEB (\000a    ID SERIAL PRIMARY KEY,\000a    NAME TEXT,\000a    EMAIL TEXT,\000a    PASSWORD TEXT\000a);\000a\000aCREATE TABLE CITY (\000a     ID SERIAL PRIMARY KEY,\000a     NAME TEXT\000a);"; expected "(, ARRAY, INVISIBLE, VISIBLE, NOT, NULL, AS, DEFAULT, GENERATED, ON, NOT, NULL, DEFAULT, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, ., )"; SQL statement:
+
+
+CREATE TABLE candidate (
+    id SERIAL PRIMARY KEY,
+    name TEXT
+    cityName TEXT,
+    create_date timestamp without time zone
+);
+
+CREATE TABLE userWEB (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    email TEXT,
+    password TEXT
+);
+
+CREATE TABLE city (
+     id SERIAL PRIMARY KEY,
+     name TEXT
+); [42001-206]
+2022-01-23 22:45:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "POST" already exists; SQL statement:
+CREATE TABLE post (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    description TEXT,
+    create_date timestamp
+); [42101-206]
+2022-01-23 22:46:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "POST" already exists; SQL statement:
+CREATE TABLE post (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    description TEXT,
+    create_date timestamp
+); [42101-206]
