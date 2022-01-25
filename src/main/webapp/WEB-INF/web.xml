@@ -130,6 +130,6 @@
   </filter-mapping>
   <filter-mapping>
     <filter-name>CORSFilter</filter-name>
-    <url-pattern>/cityJson.do</url-pattern>
+    <url-pattern>/*</url-pattern>
   </filter-mapping>
 </web-app>
